@@ -13,9 +13,24 @@ def cleanexityear(year):
         return x[0]
 
 def cleanbirthyear(year):
-    if re.search('Died:', year) == True:
+    x = re.findall('^Died:', year)
+    if x:
         return "N/A"
 
+    y = re.findall(r'^DOB: \d+\/\d+\/(\d+)$', year)
+    if y:
+        if len(y[0]) == 2:
+            return '19' + y[0]
+        else:
+            return y[0]
+
+    z = re.findall(r'^Born: \d+\/\d+\/(\d+)$', year)
+    if z:
+        if len(z[0]) == 2:
+            return '19' + z[0]
+        else:
+            return z[0]
+                 
 def contains_2_digits(year:str) -> bool:
     if re.search(r'^\d\d$',year) is None: return False
     return True

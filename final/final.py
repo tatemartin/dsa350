@@ -18,13 +18,16 @@ with open('alumni_anonymized.csv') as records:
     for row in reader:
         new_row = dict()
         if count< 12991:
-            new_row['Exit_Year'] = cleanexityear(row[1])    
+            new_row['Exit_Year'] = cleanexityear(row[1])
+            new_row['Birth_Year'] = cleanbirthyear(row[4])
             new_row['Last_Name'] = row[0]
-            if new_row['Exit_Year'] != 'N/A':
+            new_row['Id'] = row[3]
+            new_row['Exit_Age'] = new_row['Exit_Year'] - new_row['Birth_Year']
+            if new_row['Birth_Year'] and len(new_row['Birth_Year']) == 4 and new_row['Exit_Year'] != 'N/A':
                 entries.append(new_row)
         count+=1
 
 with open('alumni_clean.csv', 'w', newline='') as new_file:
-    csv_writer = csv.DictWriter(new_file,fieldnames=['Last_Name','Exit_Year'])
+    csv_writer = csv.DictWriter(new_file,fieldnames=['Last_Name','Exit_Year','Id','Birth_Year'])
     csv_writer.writeheader()
     csv_writer.writerows(entries)
